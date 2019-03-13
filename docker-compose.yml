@@ -79,8 +79,10 @@ services:
                         - ./www/src/static/:/www/static/:ro
                 networks:
                         - www
+                        - spider
                 links:
                         - www
+                        - spider
                 ports:
                         - "80:80"
                         - "443:443"

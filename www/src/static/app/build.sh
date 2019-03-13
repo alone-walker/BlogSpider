@@ -2,6 +2,8 @@
 
 npm init -f
 
+npm install google-protobuf --save-dev
+npm install grpc-web --save-dev
 npm install react --save-dev
 npm install react-dom --save-dev
 npm install whatwg-fetch --save-dev
