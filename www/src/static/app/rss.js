@@ -1,9 +1,8 @@
 import React from "react";
 import {render, findDOMNode} from "react-dom";
 import {SelectBox, EditBox, MEditBox, Button, Title, ErrMsg, Hr} from "./feed_component";
-
-const {RssFeed} = require("./spider_pb.js");
-const {SpiderRpcClient} = require("./spider_grpc_web_pb.js");
+import {RssFeed} from "./spider_pb";
+import {SpiderRpcClient} from "./spider_grpc_web_pb";
 
 
 class SubmitForm extends React.Component {
@@ -46,14 +45,8 @@ class SubmitForm extends React.Component {
       }
 
       let that = this;
-      var rpc_url = window.location.protocol + "//" + window.location.hostname;
-      if (window.location.protocol == "http") {
-        rpc_url = rpc_url + ":80"
-      }
-      else {
-        rpc_url = rpc_url + ":443"
-      }
-      var client = new SpiderRpcClient(rpc_url);
+      var rpc_url = window.location.protocol + "//" + window.location.hostname + ":50051";
+      var client = new SpiderRpcClient(rpc_url, null, null);
       var request = new RssFeed();
       request.setUrl(feed["url"]);
       request.setCategory(feed["category"]);
@@ -85,7 +78,7 @@ class SubmitForm extends React.Component {
         }
       });
       call.on('status', function(status) {
-        that.err.fadeIn(status.details);
+        console.log(status.details);
       });
     };
     findDOMNode(this.refs.Button).blur();

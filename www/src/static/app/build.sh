@@ -14,6 +14,6 @@ npm install @babel/plugin-proposal-class-properties --save-dev
 npm install webpack --save-dev
 npm install webpack-cli --save-dev
 npm install babel-loader --save-dev
-npm install uglifyjs-webpack-plugin --save-dev
+npm install terser-webpack-plugin --save-dev
 
 node_modules/.bin/webpack --mode production --config webpack.config.js

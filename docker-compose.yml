@@ -68,11 +68,26 @@ services:
                         - ./www/:/www/
                 command: ["uwsgi", "--ini-paste", "uwsgi.ini"]
 
+        envoy:
+                build:
+                        context: envoy/
+                container_name: envoy
+                depends_on:
+                        - spider
+                networks:
+                        - spider
+                links:
+                        - spider
+                ports:
+                        - "50051:50051"
+                command: ["/usr/local/bin/envoy", "-c", "/etc/envoy/envoy.yaml"]
+
         nginx:
                 image: nginx
                 container_name: nginx
                 depends_on:
                         - www
+                        - spider
                 volumes:
                         - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
                         - ./nginx/www.conf:/etc/nginx/www.conf:ro
@@ -85,7 +100,6 @@ services:
                         - spider
                 ports:
                         - "80:80"
-                        - "443:443"
                         - "8080:8080"
 
 networks:

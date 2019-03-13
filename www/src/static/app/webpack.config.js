@@ -1,6 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const configuration = {};
 const jspath = path.resolve(__dirname);
@@ -21,40 +21,31 @@ module.exports = {
   },
 
   module: {
-    rules: [
-      {
-	      test: /\.js/,
-	      exclude: /node_modules/,
-	      loader: "babel-loader",
-	      options: {
-          presets: [
-            '@babel/preset-env',
-						'@babel/preset-react',
-            {
-               plugins: [
-                 '@babel/plugin-proposal-class-properties'
-               ]
-            }
-          ]
-	      },
-	    }
-	  ]
+    rules: [{
+      test: /\.js/,
+      exclude: [/node_modules/, /spider_.*_pb.js/],
+      loader: "babel-loader",
+      options: {
+        presets: [
+          '@babel/preset-env',
+          '@babel/preset-react',
+          {
+             plugins: ['@babel/plugin-proposal-class-properties'],
+          }
+        ]
+      },
+    }]
   },
-
-  plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-         NODE_ENV: JSON.stringify("production")
-       }
-    }),
-  ],
 
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({
-          uglifyOptions: {
-              compress: false
-          }
+      new TerserPlugin({
+        terserOptions: {
+          warnings: false,
+          compress: {},
+          parse: {},
+          mangle: true,
+        }
       })
     ]
   },
