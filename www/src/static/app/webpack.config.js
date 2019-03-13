@@ -21,43 +21,41 @@ module.exports = {
   },
 
   module: {
-      rules: [
-          {
-	    test: /\.js/,
-	    exclude: /node_modules/,
-	    loader: "babel-loader",
-
-	    options: {
-                presets: [
-                    '@babel/preset-env',
-		    '@babel/preset-react',
-                    {
-                        plugins: [
-                          '@babel/plugin-proposal-class-properties'
-                        ]
-                    }
+    rules: [
+      {
+	      test: /\.js/,
+	      exclude: /node_modules/,
+	      loader: "babel-loader",
+	      options: {
+          presets: [
+            '@babel/preset-env',
+						'@babel/preset-react',
+            {
+               plugins: [
+                 '@babel/plugin-proposal-class-properties'
                ]
-	    },
-	  }
-      ]
+            }
+          ]
+	      },
+	    }
+	  ]
   },
 
   plugins: [
-      new webpack.DefinePlugin({
-        "process.env": {
-           NODE_ENV: JSON.stringify("production")
-         }
-      }),
+    new webpack.DefinePlugin({
+      "process.env": {
+         NODE_ENV: JSON.stringify("production")
+       }
+    }),
   ],
 
   optimization: {
-      minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    compress: false
-                }
-            })
-        ]
-    },
-
+    minimizer: [
+      new UglifyJsPlugin({
+          uglifyOptions: {
+              compress: false
+          }
+      })
+    ]
+  },
 };
