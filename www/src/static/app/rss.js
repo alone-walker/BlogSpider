@@ -32,12 +32,16 @@ class SubmitForm extends React.Component {
         feed[key] = this.state[key];
       }
     }
-    if (feed["url"] == null || feed["url"] == "") {
+    if (feed["url"] == "") {
       this.err.fadeIn("需要网址数据");
       setTimeout(() => {this.err.fadeOut()}, 800);
     }
     else {
       this.err.fadeIn("正在提交 .....");
+
+      if (feed["item_content_xpath"] == "") {
+        delete feed["item_content_xpath"];
+      }
 
       let nodes = feed["removed_xpath_nodes"].filter((e) => {return e != "";});
       if (nodes.length == 0) {
@@ -50,7 +54,7 @@ class SubmitForm extends React.Component {
       var request = new RssFeed();
       request.setUrl(feed["url"]);
       request.setCategory(feed["category"]);
-      if (feed["item_content_xpath"] != null && feed["item_content_xpath"] != "") {
+      if (feed["item_content_xpath"] != null) {
         request.setItem_content_xpath(feed["item_content_xpath"]);
       }
       if (feed["removed_xpath_nodes"] != null) {
