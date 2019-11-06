@@ -45,9 +45,6 @@ class Day(Resource):
         class DayRequestSchema(Schema):
             day = fields.Date(required=True)
 
-            def __init__(self, strict=True, **kwargs):
-                super().__init__(strict=strict, **kwargs)
-
             @validates('day')
             def validate_day(self, day):
                 day_begin = get_begin_day()
@@ -56,7 +53,7 @@ class Day(Resource):
 
         schema = DayRequestSchema()
         try:
-            day_request = schema.load(request.args).data
+            day_request = schema.load(request.args)
         except ValidationError as err:
             return {'message': format_messages(err.messages)}, 400
         except Exception:
@@ -103,9 +100,6 @@ class Entries(Resource):
             aid = ObjectIdField()
             q = fields.String()
 
-            def __init__(self, strict=True, **kwargs):
-                super().__init__(strict=strict, **kwargs)
-
             @validates('q')
             def validate_q(self, q):
                 if q not in ('p', 'n'):
@@ -113,7 +107,7 @@ class Entries(Resource):
 
         schema = EntryRequestScheme()
         try:
-            entry_request = schema.load(request.args).data
+            entry_request = schema.load(request.args)
         except ValidationError as err:
             return {'message': format_messages(err.messages)}, 400
         except Exception:
@@ -144,15 +138,12 @@ class Vote(Resource):
         class VoteRequestSchema(Schema):
             aid = ObjectIdField(required=True)
 
-            def __init__(self, strict=True, **kwargs):
-                super().__init__(strict=strict, **kwargs)
-
         if 'uid' not in session:
             return {'message': 'no uid'}, 401
 
         schema = VoteRequestSchema()
         try:
-            vote_request = schema.load(request.get_json()).data
+            vote_request = schema.load(request.get_json())
         except ValidationError as err:
             return {'message': format_messages(err.messages)}, 400
         except Exception:
