@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
 
+import logging
+
 from lxml.html import tostring, HtmlElement
 
 from scrapy.exceptions import DropItem
 
 from mydm.ai import get_category
 from mydm.model import is_exists_article, save_article
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_article_lang(item):
@@ -43,6 +48,9 @@ class StorePipeline:
         article['spider'] = spider._id
         article['source'] = spider.title
         article['category'] = get_category(article)
+        logger.info(
+            f'article[title: {article["title"]}, spider: {article["source"]}]'
+        )
         if not is_exists_article(article):
             save_article(article)
         return item
